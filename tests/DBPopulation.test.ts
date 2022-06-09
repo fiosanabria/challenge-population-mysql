@@ -36,3 +36,19 @@ test("Deberian existir 999 ciudades si eliminamos una ciudad", async () => {
   const cities = await db.getCities();
   expect(cities?.length).toBe(999);
 });
+
+test("Deberia existir una ciudad cuyo id es 56 y su pais es Colombia ", async () => {
+  const city = await db.getCityById(56);
+  expect(city?.country).toBe("Colombia");
+});
+
+test("Deberia actualizarse la cantidad de habitantes de la ciudad con id 67 a 9000000", async () => {
+  const numberOfInhabitantsBeforeUpdate = (await db.getCityById(67))
+    .number_inhabitants;
+  await db.updateNumberOfInhabitantsById(67, 9000000);
+  const numberOfInhabitantsAfterUpdate = (await db.getCityById(67))
+    .number_inhabitants;
+  expect(numberOfInhabitantsBeforeUpdate).not.toBe(
+    numberOfInhabitantsAfterUpdate
+  );
+});

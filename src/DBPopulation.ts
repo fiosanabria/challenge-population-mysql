@@ -30,6 +30,12 @@ class DBPopulation {
     return cities;
   }
 
+  async getCityById(id: number): Promise<City | undefined> {
+    const query = ``;
+    const cities: City[] = await this.queryDB(query);
+    return cities[0];
+  }
+
   async addCity(city: {
     id: number;
     name: string;
@@ -40,7 +46,12 @@ class DBPopulation {
     await this.queryDB(query);
   }
 
-  async deleteCityById(idCity: number) {
+  async deleteCityById(id: number) {
+    const query = ``;
+    await this.queryDB(query);
+  }
+
+  async updateNumberOfInhabitantsById(id: number, numberInhabitants: number) {
     const query = ``;
     await this.queryDB(query);
   }
