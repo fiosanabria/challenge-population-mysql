@@ -32,10 +32,15 @@ class DBPopulation {
 
   async addCity(city: {
     id: number;
-    city: string;
+    name: string;
     country: string;
     number_inhabitants: number;
   }) {
+    const query = ``;
+    await this.queryDB(query);
+  }
+
+  async deleteCityById(idCity: number) {
     const query = ``;
     await this.queryDB(query);
   }
@@ -52,13 +57,13 @@ export const createDB = async () => {
     await pool.query(" create database if not exists population; ");
     await pool.query(" use population; ");
     await pool.query(
-      " create table city ( id INT, city VARCHAR(50), country VARCHAR(50), number_inhabitants INT); "
+      " create table city ( id INT, name VARCHAR(50), country VARCHAR(50), number_inhabitants INT); "
     );
     const sql =
-      "insert into city (id, city, country, number_inhabitants) values ?";
+      "insert into city (id, name, country, number_inhabitants) values ?";
     const values = cities.map((city) => [
       city.id,
-      city.city,
+      city.name,
       city.country,
       city.number_inhabitants,
     ]);
