@@ -1,6 +1,6 @@
-# Base para proyectos en TypeScript con MySQL :writing_hand:
+# Challenge inhabitants mysql :writing_hand:
 
-Este template esta dirigido a todos aquellos que inician en `TyepScript` un proyecto nuevo. Para usarlo, simplemente tienes hacer un `fork` o usar el botón `use this template`.
+Desafio: superar los tests haciendo uso de consultas en sql.
 
 ## Instalación y ejecución
 
