@@ -1,4 +1,5 @@
-import DBCompany, { createDB, destroyDB } from "../src/DBPopulation";
+import DBCompany from "../src/DBPopulation";
+import { createDB, destroyDB } from "../utils/db";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -23,7 +24,7 @@ test("Deberian existir 1001 ciudades si agregamos una ciudad", async () => {
     id: 1001,
     name: "Santiago",
     country: "Chile",
-    number_inhabitants: 1000000,
+    population: 1000000,
   };
   await db.addCity(city);
   const cities = await db.getCities();
@@ -43,12 +44,8 @@ test("Deberia existir una ciudad cuyo id es 56 y su pais es Colombia ", async ()
 });
 
 test("Deberia actualizarse la cantidad de habitantes de la ciudad con id 67 a 9000000", async () => {
-  const numberOfInhabitantsBeforeUpdate = (await db.getCityById(67))
-    .number_inhabitants;
+  const populationBeforeUpdate = (await db.getCityById(67))?.population;
   await db.updateNumberOfInhabitantsById(67, 9000000);
-  const numberOfInhabitantsAfterUpdate = (await db.getCityById(67))
-    .number_inhabitants;
-  expect(numberOfInhabitantsBeforeUpdate).not.toBe(
-    numberOfInhabitantsAfterUpdate
-  );
+  const populationAfterUpdate = (await db.getCityById(67))?.population;
+  expect(populationBeforeUpdate).not.toBe(populationAfterUpdate);
 });

@@ -1,5 +1,5 @@
 import { createPool, PoolOptions } from "mysql2/promise";
-import { cities, City } from "../database/cities";
+import { City } from "../database/cities";
 
 class DBPopulation {
   private readonly config: PoolOptions;
@@ -36,12 +36,7 @@ class DBPopulation {
     return cities[0];
   }
 
-  async addCity(city: {
-    id: number;
-    name: string;
-    country: string;
-    number_inhabitants: number;
-  }) {
+  async addCity(city: City) {
     const query = ``;
     await this.queryDB(query);
   }
@@ -51,55 +46,10 @@ class DBPopulation {
     await this.queryDB(query);
   }
 
-  async updateNumberOfInhabitantsById(id: number, numberInhabitants: number) {
+  async updateNumberOfInhabitantsById(id: number, newPopulation: number) {
     const query = ``;
     await this.queryDB(query);
   }
 }
-
-export const createDB = async () => {
-  const config: PoolOptions = {
-    host: process.env.BDD_HOST || "localhost",
-    user: process.env.BDD_USER || "root",
-    password: process.env.BDD_PASS || "newpass",
-  };
-  const pool = createPool(config);
-  try {
-    await pool.query(" create database if not exists population; ");
-    await pool.query(" use population; ");
-    await pool.query(
-      " create table city ( id INT, name VARCHAR(50), country VARCHAR(50), number_inhabitants INT); "
-    );
-    const sql =
-      "insert into city (id, name, country, number_inhabitants) values ?";
-    const values = cities.map((city) => [
-      city.id,
-      city.name,
-      city.country,
-      city.number_inhabitants,
-    ]);
-    await pool.query(sql, [values]);
-  } catch (error) {
-    console.log(error);
-  } finally {
-    await pool.end();
-  }
-};
-
-export const destroyDB = async () => {
-  const config: PoolOptions = {
-    host: process.env.BDD_HOST || "localhost",
-    user: process.env.BDD_USER || "root",
-    password: process.env.BDD_PASS || "newpass",
-  };
-  const pool = createPool(config);
-  try {
-    await pool.query(" drop database if exists population; ");
-  } catch (error) {
-    console.log(error);
-  } finally {
-    await pool.end();
-  }
-};
 
 export default DBPopulation;
