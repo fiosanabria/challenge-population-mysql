@@ -1,19 +1,14 @@
 import { createPool, PoolOptions } from "mysql2/promise";
+import { cities, City } from "../database/cities";
 
-export type Employee = {
-  id: number;
-  name: string;
-  salary: number;
-};
-
-class DBCompany {
+class DBPopulation {
   private readonly config: PoolOptions;
   constructor() {
     this.config = {
       host: process.env.BDD_HOST,
       user: process.env.BDD_USER,
       password: process.env.BDD_PASS,
-      database: "company",
+      database: "population",
     };
   }
 
@@ -21,7 +16,8 @@ class DBCompany {
     const pool = createPool(this.config);
     try {
       const [rows] = await pool.query(query);
-      return rows;
+      const result = await JSON.parse(JSON.stringify(rows));
+      return result;
     } catch (error) {
       console.log(error);
     } finally {
@@ -29,10 +25,9 @@ class DBCompany {
     }
   }
 
-  async getEmployees(): Promise<Employee[]> {
-    const rows = await this.queryDB("SELECT * FROM employee");
-    const employees = await JSON.parse(JSON.stringify(rows));
-    return employees;
+  async getCities(): Promise<City[] | undefined> {
+    const cities: City[] = await this.queryDB("select * from city");
+    return cities;
   }
 }
 
@@ -44,14 +39,20 @@ export const createDB = async () => {
   };
   const pool = createPool(config);
   try {
-    await pool.query(" CREATE DATABASE IF NOT EXISTS company; ");
-    await pool.query(" USE company; ");
+    await pool.query(" create database if not exists population; ");
+    await pool.query(" use population; ");
     await pool.query(
-      " CREATE TABLE employee ( id INT(11) NOT NULL AUTO_INCREMENT, name VARCHAR(45) DEFAULT NULL, salary INT(11) DEFAULT NULL, PRIMARY KEY(id));"
+      " create table city ( id INT, city VARCHAR(50), country VARCHAR(50), number_inhabitants INT); "
     );
-    await pool.query(
-      " INSERT INTO employee values (1, 'Ryan Ray', 20000), (2, 'Joe McMillan', 40000), (3, 'John Carter', 50000); "
-    );
+    const sql =
+      "insert into city (id, city, country, number_inhabitants) values ?";
+    const values = cities.map((city) => [
+      city.id,
+      city.city,
+      city.country,
+      city.number_inhabitants,
+    ]);
+    await pool.query(sql, [values]);
   } catch (error) {
     console.log(error);
   } finally {
@@ -67,7 +68,7 @@ export const destroyDB = async () => {
   };
   const pool = createPool(config);
   try {
-    await pool.query(" DROP DATABASE IF EXISTS company; ");
+    await pool.query(" drop database if exists population; ");
   } catch (error) {
     console.log(error);
   } finally {
@@ -75,4 +76,4 @@ export const destroyDB = async () => {
   }
 };
 
-export default DBCompany;
+export default DBPopulation;
