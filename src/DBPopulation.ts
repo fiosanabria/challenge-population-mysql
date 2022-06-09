@@ -29,6 +29,16 @@ class DBPopulation {
     const cities: City[] = await this.queryDB("select * from city");
     return cities;
   }
+
+  async addCity(city: {
+    id: number;
+    city: string;
+    country: string;
+    number_inhabitants: number;
+  }) {
+    const query = ``;
+    await this.queryDB(query);
+  }
 }
 
 export const createDB = async () => {
