@@ -1,4 +1,4 @@
-# Challenge inhabitants mysql :writing_hand:
+# Challenge population mysql :writing_hand:
 
 Desafio: superar los tests haciendo uso de consultas en sql.
 
