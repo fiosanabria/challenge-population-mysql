@@ -32,7 +32,7 @@ test("Deberian existir 1001 ciudades si agregamos una ciudad", async () => {
 });
 
 test("Deberian existir 999 ciudades si eliminamos una ciudad", async () => {
-  const idCity = 1000;
+  const idCity = 999;
   await db.deleteCityById(idCity);
   const cities = await db.getCities();
   expect(cities?.length).toBe(999);
